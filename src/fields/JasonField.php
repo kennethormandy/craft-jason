@@ -124,7 +124,7 @@ class JasonField extends Field
     public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
     {
         if (Craft::$app->request->getIsSiteRequest() && !Craft::$app->request->getIsActionRequest()) {
-            return json_decode($value, true);
+            return is_array($value) ? $value : json_decode($value, true);
         } else {
             return $value;
         }
@@ -421,7 +421,7 @@ class JasonField extends Field
     {
         $value = $element->getFieldValue($this->handle);
         
-        $json = json_decode($value); 
+        $json = is_array($value) ? $value : json_decode($value, true); 
 
         if ($json === null) {
         // JSON cannot be decoded
